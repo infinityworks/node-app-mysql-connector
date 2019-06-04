@@ -1,0 +1,26 @@
+{
+  "name": "node-app-mysql-connector",
+  "version": "0.0.1",
+  "description": "Library to help with mysql connection",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "coverage": "npm run test -- --coverage --collectCoverageFrom 'src/**/*.js' && echo \"Hopefully report is generated here: file://$(pwd)/coverage/lcov-report/index.html\"",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "install-with-docker": "docker run -v $(pwd):/code --rm --workdir=/code node:10.15.3-alpine apk add git && npm install"
+  },
+  "author": "Infinity Works Consulting",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "jest": "^24.7.1"
+  },
+  "dependencies": {
+    "mysql2": "github:sidorares/node-mysql2#semver:^1.6.5"
+  }
+}
