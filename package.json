@@ -1,6 +1,6 @@
 {
   "name": "node-app-mysql-connector",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Library to help with mysql connection",
   "main": "index.js",
   "scripts": {

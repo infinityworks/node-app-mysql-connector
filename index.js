@@ -1,7 +1,19 @@
 const mysql = require('mysql2');
-const { PromiseConnection } = require('mysql2/promise');
+const { PromiseConnection, PromisePool } = require('mysql2/promise');
 const poolOptions = require('./src/poolOptions');
 const poolMonitoring = require('./src/poolMonitoring');
+
+[PromiseConnection, PromisePool].forEach((clazz) => {
+    ['query', 'execute'].forEach((method) => {
+        const original = clazz.prototype[method];
+
+        /* eslint no-param-reassign: 0 */
+        clazz.prototype[method] = async function flattenedExecute(...args) {
+            const [rows] = await original.bind(this)(...args);
+            return rows;
+        };
+    });
+});
 
 module.exports = (
     logger,
@@ -28,19 +40,6 @@ module.exports = (
     });
 
     poolMonitoring(logger, metrics, enableConnectionLogging, pool);
-
-    const { query } = PromiseConnection.prototype;
-    const { execute } = PromiseConnection.prototype;
-
-    PromiseConnection.prototype.query = async function flattenedQuery(...args) {
-        const [rows] = await query(...args);
-        return rows;
-    };
-
-    PromiseConnection.prototype.execute = async function flattenedExecute(...args) {
-        const [rows] = await execute(...args);
-        return rows;
-    };
 
     return pool.promise();
 };
